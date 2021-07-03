@@ -11,8 +11,8 @@ XI_ITERATIONS=8 # default 4
 
 # Number of times to scan the entire race track to iterate
 # 500 will get a good start, 1500 will be closer to optimal result
-LINE_ITERATIONS=10000 # default 1000
-TRACK_NAME = 'reInvent2019_track'
+LINE_ITERATIONS=1000 # default 1000
+TRACK_NAME = 'China_track'
 
 os.system("wget 'https://github.com/aws-deepracer-community/deepracer-race-data/raw/main/raw_data/tracks/npy/%s.npy' -O %s.npy" % (TRACK_NAME ,TRACK_NAME))
 waypoints = np.load("%s.npy" % TRACK_NAME)
@@ -70,7 +70,7 @@ def improve_race_line(old_line, inner_border, outer_border):
             if p_ci < target_ci:
                 # too flat, shrinking track too much
                 #print("too flat")
-            
+
                 xi_bound2 = copy.deepcopy(p_xi)
                 new_p_xi = ((xi_bound1[0] + p_xi[0]) / 2.0, (xi_bound1[1] + p_xi[1]) / 2.0)
                 if Point(new_p_xi).within(ls_inner_border) or not Point(new_p_xi).within(ls_outer_border):
@@ -113,7 +113,7 @@ npy_fname = prefix + '.npy'
 with open(py_fname, "w+") as file:
     print("Writing python code to %s" % py_fname)
     file.write(np.array_repr(race_line))
-    
+
 print("Writing numpy binary to %s" % npy_fname)
 np.save(npy_fname, race_line)
 
@@ -121,7 +121,7 @@ def plot_points(ax, points):
     ax.scatter(points[:-1,0], points[:-1,1], s=1)
     for i,p in enumerate(points):
         ax.annotate(i, (p[0], p[1]))
-# Plot 
+# Plot
 fig, ax = plt.subplots(figsize=(12,9))
 plot_points(ax, race_line)
 plot_points(ax, waypoints[:-1,2:4])
